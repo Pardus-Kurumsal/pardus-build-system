@@ -1,1 +1,4 @@
 .#*
+# ignore editor backups
+*~
+*.sw?
