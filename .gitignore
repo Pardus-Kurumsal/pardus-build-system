@@ -2,3 +2,7 @@
 # ignore editor backups
 *~
 *.sw?
+
+# ignore generated files
+docker-compose.yml
+dronerc
