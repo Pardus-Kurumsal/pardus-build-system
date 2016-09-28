@@ -47,7 +47,7 @@ $(CGIT_RC_PATH): $(CONFIG_MK)
 	@mkdir -p $(dir $@)
 	@echo $(CGIT_RC_CONTENT) > $@
 
-setup-postgres:
+setup-postgres: $(CONFIG_MK)
 	@echo 'Setting up Postgres database server...'
 	@echo 'Spinning up a new Postgres container'
 	@docker run -de POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) --name=postgressetup \
