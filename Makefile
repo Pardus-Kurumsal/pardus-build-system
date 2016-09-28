@@ -64,7 +64,7 @@ up: dronerc $(CGIT_RC_PATH) docker-compose.yml setup-postgres
 	@docker-compose up -d
 
 clean:
-	-docker-compose down -v > /dev/null 2>&1
+	@echo 'Removing composed docker containers...';docker-compose down -v > /dev/null 2>&1 || true
 	-rm -f $(CLEANFILES)
 
 .PHONY: all clean setup-postgres
