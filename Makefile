@@ -29,18 +29,18 @@ CLEANFILES := dronerc docker-compose.yml $(CGIT_RC_PATH)
 all: up
 
 docker-compose.yml: docker-compose.yml.in $(CONFIG_MK)
-	@echo 'GEN	'$@;cp -f $< $@
-	@sed -i -e 's|@@DOCKER_VOLS@@|$(DOCKER_VOLS)|g' "$@"
-	@sed -i -e 's|@@DRONE_PORT@@|$(DRONE_PORT)|g' "$@"
-	@sed -i -e 's|@@DRONE_PASSWD@@|$(DRONE_PASSWD)|g' "$@"
-	@sed -i -e 's|@@GOGS_WEB_PORT@@|$(GOGS_WEB_PORT)|g' "$@"
-	@sed -i -e 's|@@GOGS_SSH_PORT@@|$(GOGS_SSH_PORT)|g' "$@"
-	@sed -i -e 's|@@GOGS_PASSWD@@|$(GOGS_PASSWD)|g' "$@"
-	@sed -i -e 's|@@CGIT_PORT@@|$(CGIT_PORT)|g' "$@"
+	@echo 'GEN	'$@;
+	@sed -e 's|@@DOCKER_VOLS@@|$(DOCKER_VOLS)|g' "$@" \
+	     -e 's|@@DRONE_PORT@@|$(DRONE_PORT)|g' "$@" \
+	     -e 's|@@DRONE_PASSWD@@|$(DRONE_PASSWD)|g' "$@" \
+	     -e 's|@@GOGS_WEB_PORT@@|$(GOGS_WEB_PORT)|g' "$@" \
+	     -e 's|@@GOGS_SSH_PORT@@|$(GOGS_SSH_PORT)|g' "$@" \
+	     -e 's|@@GOGS_PASSWD@@|$(GOGS_PASSWD)|g' "$@" \
+	     -e 's|@@CGIT_PORT@@|$(CGIT_PORT)|g' $< > $@
 
 dronerc: dronerc.in $(CONFIG_MK)
-	@echo 'GEN	'$@;cp -f $< $@
-	@sed -i -e 's|@@DRONE_PASSWD@@|$(DRONE_PASSWD)|g' "$@"
+	@echo 'GEN	'$@
+	@sed -e 's|@@DRONE_PASSWD@@|$(DRONE_PASSWD)|g' $< > $@
 
 $(CGIT_RC_PATH): $(CONFIG_MK)
 	@echo 'GEN	'$@
