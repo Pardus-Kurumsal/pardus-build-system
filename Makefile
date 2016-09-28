@@ -26,6 +26,10 @@ CGIT_RC_CONTENT := "scan-path=$(CGIT_SCAN_PATH)"
 
 CLEANFILES := dronerc docker-compose.yml $(CGIT_RC_PATH)
 
+ifneq ($(ADD_SUFFIX),)
+    SUFFIX:=_$(shell date +'%Y%m%d%H%M%S')
+endif
+
 all: up
 
 docker-compose.yml: docker-compose.yml.in $(CONFIG_MK)
@@ -36,6 +40,7 @@ docker-compose.yml: docker-compose.yml.in $(CONFIG_MK)
 	     -e 's|@@GOGS_WEB_PORT@@|$(GOGS_WEB_PORT)|g' "$@" \
 	     -e 's|@@GOGS_SSH_PORT@@|$(GOGS_SSH_PORT)|g' "$@" \
 	     -e 's|@@GOGS_PASSWD@@|$(GOGS_PASSWD)|g' "$@" \
+	     -e 's|@@SUFFIX@@|$(SUFFIX)|g' "$@" \
 	     -e 's|@@CGIT_PORT@@|$(CGIT_PORT)|g' $< > $@
 
 dronerc: dronerc.in $(CONFIG_MK)
