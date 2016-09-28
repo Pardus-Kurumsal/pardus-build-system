@@ -72,4 +72,8 @@ clean:
 	@echo 'Removing composed docker containers...';docker-compose down -v > /dev/null 2>&1 || true
 	-rm -f $(CLEANFILES)
 
-.PHONY: all clean setup-postgres
+destructive-clean: clean
+	@echo 'WARNING: Removing persistent container data: '$(DOCKER_VOLS)
+	-rm -fr $(DOCKER_VOLS)
+
+.PHONY: clean destructive-clean setup-postgres
