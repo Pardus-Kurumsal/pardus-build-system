@@ -11,9 +11,12 @@ DOCKER_VOLS ?= /var/dockers
 DRONE_PORT ?= 8080
 DRONE_PASSWD ?= 123456
 
+GOGS_HOST = localhost
+GOGS_SECRET_KEY = m22UoANwkbZd1PD
 GOGS_WEB_PORT ?= 10080
 GOGS_SSH_PORT ?= 10022
 GOGS_PASSWD ?= 123456
+GOGS_APP_INI_PATH ?= $(DOCKER_VOLS)/gogs/gogs/conf/app.ini
 
 POSTGRES_PASSWD ?= 123456
 
@@ -24,7 +27,7 @@ CGIT_RC_FILE ?= etc/cgitrepos
 CGIT_RC_PATH := $(DOCKER_VOLS)/$(CGIT_RC_FILE)
 CGIT_RC_CONTENT := "scan-path=$(CGIT_SCAN_PATH)"
 
-CLEANFILES := dronerc docker-compose.yml $(CGIT_RC_PATH)
+CLEANFILES := dronerc docker-compose.yml $(CGIT_RC_PATH) $(GOGS_APP_INI_PATH)
 
 ifneq ($(ADD_SUFFIX),)
     SUFFIX:=_$(shell date +'%Y%m%d%H%M%S')
@@ -52,6 +55,16 @@ $(CGIT_RC_PATH): $(CONFIG_MK)
 	@mkdir -p $(dir $@)
 	@echo $(CGIT_RC_CONTENT) > $@
 
+$(GOGS_APP_INI_PATH): app.ini.in $(CONFIG_MK)
+	@echo 'GEN	'$@
+	@mkdir -p $(dir $@)
+	@sed -e 's|@@SUFFIX@@|$(SUFFIX)|g' "$@" \
+	     -e 's|@@GOGS_PASSWD@@|$(GOGS_PASSWD)|g' "$@" \
+	     -e 's|@@GOGS_HOST@@|$(GOGS_HOST)|g' "$@" \
+	     -e 's|@@GOGS_WEB_PORT@@|$(GOGS_WEB_PORT)|g' "$@" \
+	     -e 's|@@GOGS_SSH_PORT@@|$(GOGS_SSH_PORT)|g' "$@" \
+	     -e 's|@@GOGS_SECRET_KEY@@|$(GOGS_SECRET_KEY)|g' $< > $@
+
 setup-postgres: $(CONFIG_MK)
 	@echo 'Setting up Postgres database server...'
 	@echo 'Spinning up a new Postgres container'
@@ -69,7 +82,7 @@ setup-postgres: $(CONFIG_MK)
 	@echo 'Removing temporary Postgres container'
 	@docker rm -f postgressetup
 
-up: dronerc $(CGIT_RC_PATH) docker-compose.yml setup-postgres
+up: dronerc $(CGIT_RC_PATH) $(GOGS_APP_INI_PATH) docker-compose.yml setup-postgres
 	@echo 'Starting up docker-compose'
 	@docker-compose up -d
 
