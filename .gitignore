@@ -6,3 +6,6 @@
 # ignore generated files
 docker-compose.yml
 dronerc
+
+# ignore configuration file(s)
+config.mk
