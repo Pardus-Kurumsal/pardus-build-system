@@ -55,9 +55,13 @@ $(CGIT_RC_PATH): $(CONFIG_MK)
 setup-postgres: $(CONFIG_MK)
 	@echo 'Setting up Postgres database server...'
 	@echo 'Spinning up a new Postgres container'
-	@docker run -de POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) --name=postgressetup \
+	@docker run -de POSTGRES_PASSWORD=$(POSTGRES_PASSWD) --name=postgressetup \
 	    -v $(DOCKER_VOLS)/postgres:/var/lib/postgresql/data kiasaki/alpine-postgres
 	@sleep $(POSTGRES_DELAY)
+	@while ! docker exec -it postgressetup psql -U postgres -c "\l" > /dev/null 2>&1; do \
+	    sleep $(POSTGRES_DELAY); \
+	    echo "Waiting for Postgres to start..."; \
+	done
 	@docker exec -it postgressetup psql -U postgres -c "CREATE USER gogs WITH PASSWORD '$(GOGS_PASSWD)';" && \
 	    docker exec -it postgressetup psql -U postgres -c "CREATE USER drone WITH PASSWORD '$(DRONE_PASSWD)';" && \
 	    docker exec -it postgressetup psql -U postgres -c "CREATE DATABASE gogs OWNER gogs;" || \
