@@ -37,13 +37,13 @@ all: up
 
 docker-compose.yml: docker-compose.yml.in $(CONFIG_MK)
 	@echo 'GEN	'$@;
-	@sed -e 's|@@DOCKER_VOLS@@|$(DOCKER_VOLS)|g' "$@" \
-	     -e 's|@@DRONE_PORT@@|$(DRONE_PORT)|g' "$@" \
-	     -e 's|@@DRONE_PASSWD@@|$(DRONE_PASSWD)|g' "$@" \
-	     -e 's|@@GOGS_WEB_PORT@@|$(GOGS_WEB_PORT)|g' "$@" \
-	     -e 's|@@GOGS_SSH_PORT@@|$(GOGS_SSH_PORT)|g' "$@" \
-	     -e 's|@@GOGS_PASSWD@@|$(GOGS_PASSWD)|g' "$@" \
-	     -e 's|@@SUFFIX@@|$(SUFFIX)|g' "$@" \
+	@sed -e 's|@@DOCKER_VOLS@@|$(DOCKER_VOLS)|g' \
+	     -e 's|@@DRONE_PORT@@|$(DRONE_PORT)|g' \
+	     -e 's|@@DRONE_PASSWD@@|$(DRONE_PASSWD)|g' \
+	     -e 's|@@GOGS_WEB_PORT@@|$(GOGS_WEB_PORT)|g' \
+	     -e 's|@@GOGS_SSH_PORT@@|$(GOGS_SSH_PORT)|g' \
+	     -e 's|@@GOGS_PASSWD@@|$(GOGS_PASSWD)|g' \
+	     -e 's|@@SUFFIX@@|$(SUFFIX)|g' \
 	     -e 's|@@CGIT_PORT@@|$(CGIT_PORT)|g' $< > $@
 
 dronerc: dronerc.in $(CONFIG_MK)
@@ -58,11 +58,11 @@ $(CGIT_RC_PATH): $(CONFIG_MK)
 $(GOGS_APP_INI_PATH): app.ini.in $(CONFIG_MK)
 	@echo 'GEN	'$@
 	@mkdir -p $(dir $@)
-	@sed -e 's|@@SUFFIX@@|$(SUFFIX)|g' "$@" \
-	     -e 's|@@GOGS_PASSWD@@|$(GOGS_PASSWD)|g' "$@" \
-	     -e 's|@@GOGS_HOST@@|$(GOGS_HOST)|g' "$@" \
-	     -e 's|@@GOGS_WEB_PORT@@|$(GOGS_WEB_PORT)|g' "$@" \
-	     -e 's|@@GOGS_SSH_PORT@@|$(GOGS_SSH_PORT)|g' "$@" \
+	@sed -e 's|@@SUFFIX@@|$(SUFFIX)|g' \
+	     -e 's|@@GOGS_PASSWD@@|$(GOGS_PASSWD)|g' \
+	     -e 's|@@GOGS_HOST@@|$(GOGS_HOST)|g' \
+	     -e 's|@@GOGS_WEB_PORT@@|$(GOGS_WEB_PORT)|g' \
+	     -e 's|@@GOGS_SSH_PORT@@|$(GOGS_SSH_PORT)|g' \
 	     -e 's|@@GOGS_SECRET_KEY@@|$(GOGS_SECRET_KEY)|g' $< > $@
 
 setup-postgres: $(CONFIG_MK)
