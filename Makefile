@@ -33,7 +33,7 @@ ifneq ($(ADD_SUFFIX),)
     SUFFIX:=_$(shell date +'%Y%m%d%H%M%S')
 endif
 
-all: up
+all: setup
 
 docker-compose.yml: docker-compose.yml.in $(CONFIG_MK)
 	@echo 'GEN	'$@;
@@ -82,9 +82,12 @@ setup-postgres: $(CONFIG_MK)
 	@echo 'Removing temporary Postgres container'
 	@docker rm -f postgressetup
 
-up: dronerc $(CGIT_RC_PATH) $(GOGS_APP_INI_PATH) docker-compose.yml setup-postgres
+setup-containers: dronerc $(CGIT_RC_PATH) $(GOGS_APP_INI_PATH) docker-compose.yml
 	@echo 'Starting up docker-compose'
 	@docker-compose up -d
+
+setup: setup-postgres setup-containers
+	@echo 'DONE!'
 
 clean:
 	@echo 'Removing composed docker containers...';docker-compose down -v > /dev/null 2>&1 || true
@@ -94,4 +97,4 @@ destructive-clean: clean
 	@echo 'WARNING: Removing persistent container data: '$(DOCKER_VOLS)
 	-rm -fr $(DOCKER_VOLS)
 
-.PHONY: clean destructive-clean setup-postgres
+.PHONY: clean destructive-clean setup-postgres setup
