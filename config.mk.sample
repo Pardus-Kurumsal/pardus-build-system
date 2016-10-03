@@ -1,0 +1,16 @@
+DOCKER_VOLS        = /tmp/testdata
+POSTGRES_PASSWD    = myPassW0rd
+
+# This variable is commented out. So our makefile will use the default
+# value of this variable
+# DRONE_PORT        =
+
+DRONE_PASSWD       = myPassW0rd
+# GOGS_HOST        = <ip of your docker host machine>
+# GOGS_SECRET_KEY    = Global secret key for your server.
+GOGS_WEB_PORT      = 10080
+GOGS_SSH_PORT      = 10022
+GOGS_PASSWD        = myPassW0rd
+
+CGIT_SCAN_PATH     = /var/git
+CGIT_PORT          = 8888
