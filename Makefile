@@ -4,7 +4,7 @@ endif
 
 -include config.mk
 
-POSTGRES_DELAY ?= 5
+POSTGRES_DELAY ?= 8
 
 DOCKER_VOLS ?= /var/dockers
 
