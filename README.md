@@ -12,6 +12,9 @@ or create PRs if you don't like.
 
 ## 2. How to use this Makefile
 
+Follow instructions assume that you have [docker][1] and [docker-compose][2]
+installed.
+
 The Makefile provides you with a couple of useful targets, which you can
 use to bootstrap the build environment.
 
@@ -67,3 +70,6 @@ their descriptions.
 |GOGS_PASSWD        | Assigns a password to 'gogs' postgresql account.                                  |123456           |
 |CGIT_SCAN_PATH     | A path which will be scanned for repositories.                                    |/var/git         |
 |CGIT_PORT          | HTTP port for Cgit.                                                               |8888             |
+
+[1]: https://docs.docker.com/engine/installation/linux/
+[2]: https://docs.docker.com/compose/install/
