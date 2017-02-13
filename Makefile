@@ -11,6 +11,8 @@ DOCKER_VOLS ?= /var/dockers
 DRONE_PORT ?= 8080
 DRONE_PASSWD ?= 123456
 
+DTRACKER_PASSWD ?= 123456
+
 GOGS_HOST ?= localhost
 GOGS_SECRET_KEY ?= m22UoANwkbZd1PD
 GOGS_WEB_PORT ?= 10080
@@ -77,7 +79,9 @@ setup-postgres: $(CONFIG_MK)
 	done
 	@docker exec -it postgressetup psql -U postgres -c "CREATE USER gogs WITH PASSWORD '$(GOGS_PASSWD)';" && \
 	    docker exec -it postgressetup psql -U postgres -c "CREATE USER drone WITH PASSWORD '$(DRONE_PASSWD)';" && \
-	    docker exec -it postgressetup psql -U postgres -c "CREATE DATABASE gogs OWNER gogs;" || \
+        docker exec -it postgressetup psql -U postgres -c "CREATE USER distrotracker WITH PASSWORD '$(DTRACKER_PASSWD)';" && \
+        docker exec -it postgressetup psql -U postgres -c "CREATE DATABASE distrotracker OWNER distrotracker;" && \
+    	docker exec -it postgressetup psql -U postgres -c "CREATE DATABASE gogs OWNER gogs;" || \
 	    (docker rm -vf postgressetup && false)
 	@echo 'Removing temporary Postgres container'
 	@docker rm -f postgressetup
