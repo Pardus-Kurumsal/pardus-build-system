@@ -13,7 +13,7 @@ or create PRs if you don't like.
 ## 2. How to use this Makefile
 
 Follow instructions assume that you have [docker][1] and [docker-compose][2]
-installed.
+installed. You will also need "pardus/distrotracker" image installed on the system.
 
 The Makefile provides you with a couple of useful targets, which you can
 use to bootstrap the build environment.
