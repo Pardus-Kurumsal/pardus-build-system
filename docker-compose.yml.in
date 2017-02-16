@@ -15,7 +15,7 @@ services:
       - gogs
     restart: unless-stopped
   gogs:
-    image: gogs/gogs
+    image: gogs/gogs:0.9.141
     ports:
       - "@@GOGS_WEB_PORT@@:3000"
       - "@@GOGS_SSH_PORT@@:22"
