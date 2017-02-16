@@ -12,5 +12,7 @@ GOGS_WEB_PORT      = 10080
 GOGS_SSH_PORT      = 10022
 GOGS_PASSWD        = myPassW0rd
 
+DTRACKER_PORT      = 8000
+DTRACKER_PASSWD    = 123456
 CGIT_SCAN_PATH     = /var/git
 CGIT_PORT          = 8888

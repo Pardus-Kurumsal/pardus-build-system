@@ -63,6 +63,9 @@ their descriptions.
 |POSTGRES_PASSWD    | This variable sets the superuser password for PostgreSQL.                         |123456           |
 |DRONE_PORT         | Specify the port number Drone CI listens for                                      |8080             |
 |DRONE_PASSWD       | This variable sets the possword for the user 'drone' in the PostgreSQL DB.        |123456           |
+|DTRACKER_PORT      | Specify Distro Tracker port number.                                               |8000             |
+|DTRACKER_PASSWD    | This variable sets the password for the user 'distrotracker' in PostgreSQL DB.    |123456           |
+|GOGS_HOST          | Please fill in with the hostname or IP address of the Docker host machine.        |localhost        |
 |GOGS_HOST          | Please fill in with the hostname or IP address of the Docker host machine.        |localhost        |
 |GOGS_SECRET_KEY    | Global secret key for your server.                                                |m22UoANwkbZd1PD  |
 |GOGS_WEB_PORT      | HTTP port for Gogs.                                                               |10080            |

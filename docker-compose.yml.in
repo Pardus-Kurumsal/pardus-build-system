@@ -36,3 +36,16 @@ services:
     image: kiasaki/alpine-postgres:9.5
     volumes:
       - @@DOCKER_VOLS@@/postgres:/var/lib/postgresql/data
+  distrotracker:
+    container_name: dtracker@@SUFFIX@@
+    image: pardus/distrotracker
+    ports:
+      - "@@DTRACKER_PORT@@:8000"
+    volumes:
+      - @@DOCKER_VOLS@@/distrotracker/cache:/var/cache/distro-tracker
+      - @@DOCKER_VOLS@@/distrotracker/log:/var/log/distro-tracker
+      - @@DOCKER_VOLS@@/distrotracker/var:/var/lib/distro-tracker
+    environment:
+      - DATABASE_PW=@@DTRACKER_PASSWD@@
+    depends_on:
+      - postgres

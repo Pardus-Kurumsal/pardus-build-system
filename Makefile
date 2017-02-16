@@ -11,6 +11,7 @@ DOCKER_VOLS ?= /var/dockers
 DRONE_PORT ?= 8080
 DRONE_PASSWD ?= 123456
 
+DTRACKER_PORT ?= 8000
 DTRACKER_PASSWD ?= 123456
 
 GOGS_HOST ?= localhost
@@ -42,6 +43,8 @@ docker-compose.yml: docker-compose.yml.in $(CONFIG_MK)
 	@sed -e 's|@@DOCKER_VOLS@@|$(DOCKER_VOLS)|g' \
 	     -e 's|@@DRONE_PORT@@|$(DRONE_PORT)|g' \
 	     -e 's|@@DRONE_PASSWD@@|$(DRONE_PASSWD)|g' \
+	     -e 's|@@DTRACKER_PORT@@|$(DTRACKER_PORT)|g' \
+	     -e 's|@@DTRACKER_PASSWD@@|$(DTRACKER_PASSWD)|g' \
 	     -e 's|@@GOGS_WEB_PORT@@|$(GOGS_WEB_PORT)|g' \
 	     -e 's|@@GOGS_SSH_PORT@@|$(GOGS_SSH_PORT)|g' \
 	     -e 's|@@GOGS_PASSWD@@|$(GOGS_PASSWD)|g' \
