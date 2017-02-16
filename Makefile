@@ -74,7 +74,7 @@ setup-postgres: $(CONFIG_MK)
 	@echo 'Setting up Postgres database server...'
 	@echo 'Spinning up a new Postgres container'
 	@docker run -de POSTGRES_PASSWORD=$(POSTGRES_PASSWD) --name=postgressetup \
-	    -v $(DOCKER_VOLS)/postgres:/var/lib/postgresql/data kiasaki/alpine-postgres
+	    -v $(DOCKER_VOLS)/postgres:/var/lib/postgresql/data kiasaki/alpine-postgres:9.5
 	@sleep $(POSTGRES_DELAY)
 	@while ! docker exec -it postgressetup psql -U postgres -c "\l" > /dev/null 2>&1; do \
 	    sleep $(POSTGRES_DELAY); \
