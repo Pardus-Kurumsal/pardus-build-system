@@ -30,7 +30,8 @@ CGIT_RC_FILE ?= etc/cgitrepos
 CGIT_RC_PATH := $(DOCKER_VOLS)/$(CGIT_RC_FILE)
 CGIT_RC_CONTENT := "scan-path=$(CGIT_SCAN_PATH)"
 
-CLEANFILES := dronerc docker-compose.yml $(CGIT_RC_PATH) $(GOGS_APP_INI_PATH)
+CLEANFILES := dronerc docker-compose.yml $(CGIT_RC_PATH) \
+	    $(GOGS_APP_INI_PATH) bootstrap.sql
 
 ifneq ($(ADD_SUFFIX),)
     SUFFIX:=_$(shell date +'%Y%m%d%H%M%S')
@@ -71,23 +72,8 @@ $(GOGS_APP_INI_PATH): app.ini.in $(CONFIG_MK)
 	     -e 's|@@GOGS_SECRET_KEY@@|$(GOGS_SECRET_KEY)|g' $< > $@
 
 setup-postgres: $(CONFIG_MK)
-	@echo 'Setting up Postgres database server...'
-	@echo 'Spinning up a new Postgres container'
-	@docker run -de POSTGRES_PASSWORD=$(POSTGRES_PASSWD) --name=postgressetup \
-	    -v $(DOCKER_VOLS)/postgres:/var/lib/postgresql/data kiasaki/alpine-postgres:9.5
-	@sleep $(POSTGRES_DELAY)
-	@while ! docker exec -it postgressetup psql -U postgres -c "\l" > /dev/null 2>&1; do \
-	    sleep $(POSTGRES_DELAY); \
-	    echo "Waiting for Postgres to start..."; \
-	done
-	@docker exec -it postgressetup psql -U postgres -c "CREATE USER gogs WITH PASSWORD '$(GOGS_PASSWD)';" && \
-	    docker exec -it postgressetup psql -U postgres -c "CREATE USER drone WITH PASSWORD '$(DRONE_PASSWD)';" && \
-        docker exec -it postgressetup psql -U postgres -c "CREATE USER distrotracker WITH PASSWORD '$(DTRACKER_PASSWD)';" && \
-        docker exec -it postgressetup psql -U postgres -c "CREATE DATABASE distrotracker OWNER distrotracker;" && \
-    	docker exec -it postgressetup psql -U postgres -c "CREATE DATABASE gogs OWNER gogs;" || \
-	    (docker rm -vf postgressetup && false)
-	@echo 'Removing temporary Postgres container'
-	@docker rm -f postgressetup
+	./create_db_users.sh $(POSTGRES_PASSWD) $(POSTGRES_DELAY) \
+	    $(GOGS_PASSWD) $(DRONE_PASSWD) $(DTRACKER_PASSWD) $(DOCKER_VOLS)
 
 setup-containers: dronerc $(CGIT_RC_PATH) $(GOGS_APP_INI_PATH) docker-compose.yml
 	@echo 'Starting up docker-compose'

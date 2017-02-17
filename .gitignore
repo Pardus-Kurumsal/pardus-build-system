@@ -9,3 +9,4 @@ dronerc
 
 # ignore configuration file(s)
 config.mk
+bootstrap.sql
