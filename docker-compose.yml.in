@@ -39,6 +39,7 @@ services:
     image: kiasaki/alpine-postgres:9.5
     volumes:
       - @@DOCKER_VOLS@@/postgres:/var/lib/postgresql/data
+    restart: unless-stopped
   distrotracker:
     container_name: dtracker@@SUFFIX@@
     image: pardus/distrotracker
